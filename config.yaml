@@ -1,0 +1,88 @@
+admin: 
+  - 1650055710
+path_clash: ./Clash.Meta-windows-amd64.exe
+# api: 127.0.0.1:25500   # subconvert 本地自建
+api: api.v1.mk          # subconvert
+proxyport: 7890        # CN环境代理端口
+mixed-port: 40001       # 40001，40002 will be use
+external-controller: 40000
+threads: 32           #线程数，指一次扫描多少个节点
+front: ./resource/fonts/LXGWWenKai-Light.ttf
+timeout: 5
+# 颜色
+color:
+  ping: 
+    s1: 
+      - 7
+      - 248
+      - 113
+    s2: 
+      - 30
+      - 230
+      - 103
+    s3:
+      - 83
+      - 190
+      - 78
+    s4:
+      - 186
+      - 113
+      - 31
+    s5:
+      - 254
+      - 62
+      - 0
+  speed:
+    5:
+      - 167
+      - 190
+      - 254
+    10:
+      - 158
+      - 178
+      - 245
+    30:
+      - 139
+      - 150
+      - 226
+    50:
+      - 122
+      - 127
+      - 209
+    100:
+      - 101
+      - 97
+      - 188
+    high:
+      - 68
+      - 50
+      - 155 
+    
+  youtube:
+    # 解锁
+    s1:
+      - 185
+      - 229
+      - 126
+    # N/A 延迟为-1
+    s2:
+      - 141
+      - 141
+      - 141
+    # 查询失败
+    s3:
+      - 238
+      - 107
+      - 115
+    # 自制
+    s4:
+      - 255
+      - 255
+      - 255
+    # 其他
+    s5:
+      - 169
+      - 77
+      - 163
+
+    

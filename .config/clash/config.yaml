@@ -1,0 +1,9 @@
+mixed-port: 40001
+allow-lan: false
+external-controller: 127.0.0.1:40000
+log-level: info
+ipv6: true
+secret:
+
+proxies:
+  - {name: FullTclash, server: gkdcm.myjcbbcn.top, port: 25899, type: vmess, uuid: ae811938-7e3f-472e-a3dc-9ae1b3ffc672, alterId: 0, cipher: auto, tls: false, skip-cert-verify: false, network: ws, ws-opts: {path: /, headers: {Host: gkdcm.myjcbbcn.top}}}
