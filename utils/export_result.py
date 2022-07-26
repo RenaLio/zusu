@@ -1,14 +1,13 @@
 from PIL import Image,ImageDraw,ImageFont
-import json
-import yaml
 import time
-from config import configs
 import logging
 logger = logging.getLogger("Sub")
 import warnings
 warnings.filterwarnings('ignore')
 
 
+__version__ = '2.2.0'
+save_path  = './results'
 
 class ExportResult:
     '''
@@ -26,8 +25,8 @@ class ExportResult:
     }
     '''
     def __init__(self,nodename: list, info: dict,iconfig: dict):
-        self.save = './results'
-        self.version = configs['version']
+
+        self.version = __version__
         self.nodename = nodename
         self.info = info
         self.iconfig = iconfig
@@ -182,10 +181,10 @@ class ExportResult:
             start_x =end
         print(export_time1)
         img.save(r'./results/result-{0}.png'.format(export_time1))
-        # img.save('./results/keke.png')
-        # img.save('result/result-%s.png'%(export_time))
+        return export_time1
+
     def get_color(self,key_text: str,value_text: str):
-        if '延迟' in key_text:
+        if 'Ping' in key_text:
             value_text = value_text.strip('ms')
             if int(value_text)>0 and int(value_text)<150:
                 cR = self.color['ping']['s1'][0]

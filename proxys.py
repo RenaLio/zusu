@@ -2,6 +2,7 @@ import json
 import aiohttp
 import async_timeout
 import requests
+import urllib
 
 
 # 切换节点
@@ -34,13 +35,14 @@ async def switchProxy(proxyName, proxyGroup, clashHost: str = "127.0.0.1", clash
     :param clashPort: clash的api端口
     :return: response
     """
+    print("切换节点: {}".format(proxyName))
+    node_name =  urllib.parse.quote(proxyName, safe='')
     url = "http://{}:{}/proxies/{}".format(clashHost, str(clashPort), proxyGroup)
-    payload = json.dumps({"name": proxyName})
-    _headers = {'Content-Type': 'application/json'}
+    params = json.dumps({"name": node_name}, ensure_ascii=False)
     try:
-        with async_timeout.timeout(10):
-            async with aiohttp.ClientSession() as session:
-                async with session.put(url, headers=_headers, data=payload) as r:
-                    return r
+        async with aiohttp.ClientSession() as session:
+            async with session.put(url, data=params,timeout=5) as r:
+                return r.status
     except Exception as e:
         print(e)
+        return -1

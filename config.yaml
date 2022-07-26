@@ -1,13 +1,13 @@
 admin: 
   - 1650055710
 path_clash: ./Clash.Meta-windows-amd64.exe
-# api: 127.0.0.1:25500   # subconvert 本地自建
-api: api.v1.mk          # subconvert
+# api: http://127.0.0.1:25500   # subconvert 本地自建
+api: https://api.v1.mk          # subconvert
 proxyport: 7890        # CN环境代理端口
 mixed-port: 40001       # 40001，40002 will be use
 external-controller: 40000
 threads: 32           #线程数，指一次扫描多少个节点
-front: ./resource/fonts/LXGWWenKai-Light.ttf
+front: ./resources/fonts/LXGWWenKai-Light.ttf
 timeout: 5
 # 颜色
 color:

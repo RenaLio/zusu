@@ -1,12 +1,13 @@
 import requests
 import yaml
 import time
-
+import aiohttp
+from aiohttp.client_exceptions import ClientConnectorError, ClientResponseError
 
 '''
 :url
 :下载yaml
-: 修改yaml
+:修改yaml
 '''
 class yaml_collect:
 
@@ -16,33 +17,50 @@ class yaml_collect:
         self.port = port
         self.api_port = api_port
     
-    def url2sub(self):
+    async def url2sub(self):
         '''
         获取订阅转换地址
         '''
         sub_config = 'https%3A%2F%2Fraw.githubusercontent.com%2FACL4SSR%2FACL4SSR%2Fmaster%2FClash%2Fconfig%2FACL4SSR_Online_Full.ini'
-        sub_url = 'https://'+self.api+'/sub?target=clash&url='+self.url+'&insert=false&config='+sub_config+'&emoji=true&expand=true&fdn=false&new_name=true'
+        sub_url = self.api+'/sub?target=clash&url='+self.url+'&insert=false&config='+sub_config+'&emoji=false&expand=true&fdn=false&new_name=true'
         return sub_url
 
-    def get_yaml(self):
+    async def downyaml(self):
+        url = await self.url2sub()
+        _headers = {'User-Agent': 'ClashforWindows/0.18.1'}
+        try:
+            async with aiohttp.ClientSession(headers=_headers) as session:
+                async with session.get(url, timeout=10) as response:
+                    if response.status == 200:
+                        with open('./temp/temp.yaml', 'w',encoding='utf-8') as fd:
+                            fd.write(await response.text())
+                            return True
+                    else:
+                        return False
+        except TimeoutError as e:
+            return False
+        except ClientConnectorError as c:
+            print(c)
+            return False
+
+
+
+    async def get_yaml(self):
         '''
         :写入yaml文件
         '''
-        url = self.url2sub()
-        _headers = {'User-Agent': 'ClashforWindows/0.18.1'}
+
         try:
+            with open('./temp/temp.yaml','r', encoding="UTF-8") as f:
+                yaml_data = yaml.load(f, Loader=yaml.FullLoader)
             start_time = time.time()
-            resp = requests.get(url, headers=_headers)
-            print('下载时间%s'%(time.time() - start_time))
-            node_yaml = yaml.load(resp.text,Loader=yaml.FullLoader) #node_yaml:dict
-            print('yaml转换%s'%(time.time() - start_time))
-            nodename,nodetype,node_sever,groupname = self.node_info(node_yaml)
-            node_yaml['port'] = self.port
-            node_yaml['socks-port'] = self.port+1
-            node_yaml['external-controller'] = '127.0.0.1:%s'%self.api_port
+            nodename,nodetype,node_sever,groupname = self.node_info(yaml_data)
+            yaml_data['port'] = self.port
+            yaml_data['socks-port'] = self.port+1
+            yaml_data['external-controller'] = '127.0.0.1:%s'%self.api_port
             print('关键词修改%s'%(time.time() - start_time))
             with open('./temp/temp.yaml', 'w',encoding="utf-8") as f:
-                    yaml.dump(node_yaml, f,allow_unicode=True,sort_keys=False) 
+                    yaml.dump(yaml_data, f,allow_unicode=True,sort_keys=False)
             print('最终时间%s'%(time.time() - start_time))           
             return (nodename,nodetype,node_sever,groupname)
         except:
